@@ -49,6 +49,11 @@ numbers2Sum  (x:xs) n | (n-x) < 0 = []
 
 -- -- Examples 
 -- g1 = groupby3 [1,2,3,4,5,6,7,8,9,10]     --  [ [1,2,3],[4,5,6],[7,8,9],[10]]
+-- copylist2 [] buf = (reverse buf):[]
+-- copylist2 (x:xs) buf
+--       | (length buf == 3) = 
+--         | otherwise =
+
 
 -- -- copylist2 [] buf = reverse buf
 -- -- copylist2 (x:xs) buf = copylist2 xs (x:buf)
