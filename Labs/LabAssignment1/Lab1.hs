@@ -82,10 +82,13 @@ sumSales s d (x:xs) -- still stores to check (list is filled)
 
 -- 5. split
 split :: Eq a => a -> [a] -> [[a]]
-split _ [] = [[]] -- list is empty
-split c (x:xs)
-          | c == x = split c xs -- element matches the delimeter; skip the delimeter
-          
+split c iL = sHelper c iL [] -- delimeter, input list, buffer
+     where
+          sHelper c [] buf -- empty input list
+                    | buf == [] = []
+                    | otherwise = (reverse buf):[]
+          sHelper c (x:xs) buf 
+                    | c == x = (reverse buf):(sHelper c xs []) -- matching delimeter, reset the buf
+                    | otherwise = sHelper c xs (x:buf) -- not matching, add the element to the buf
 
 -- 6. nSplit
-
