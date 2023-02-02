@@ -81,6 +81,10 @@ sumSales s d (x:xs) -- still stores to check (list is filled)
           | otherwise = sumSales s d xs
 
 -- 5. split
+-- Description: takes a delimiter value “c” and a list “iL”, and it splits the input list with 
+-- respect to the delimiter “c”. The goal is to produce a result in which the elements of the original list have 
+-- been collected into ordered sub-lists each containing the elements between the occurrences of the 
+-- delimiter in the input list. The delimiter value should be excluded from the sub-lists.
 split :: Eq a => a -> [a] -> [[a]]
 split c iL = sHelper c iL [] -- delimeter, input list, buffer
      where
@@ -92,3 +96,15 @@ split c iL = sHelper c iL [] -- delimeter, input list, buffer
                     | otherwise = sHelper c xs (x:buf) -- not matching, add the element to the buf
 
 -- 6. nSplit
+-- Description: takes a delimiter value “c”, an integer “n”,  and a list “iL”, and it splits 
+-- the input list with respect to the delimiter “c” up to “n” times. Unlike split, it should not split the 
+-- input list at every delimiter occurrence, but only for the first “n” occurrences of it.  
+nSplit c n iL = nSplitHelper c n iL []
+          where 
+               nSplitHelper c n [] buf -- empty input list
+                              | buf == [] = []
+                              | otherwise = (reverse buf):[]
+               nSplitHelper c n (x:xs) buf
+                              | (c == x) && (n > 0) = (reverse buf):(nSplitHelper c (n-1) xs [])-- matches delimeter, have more splits to do
+                              | (c /= x) && (n > 0) = nSplitHelper c n xs (x:buf)-- does not match delimeter, still have more splits to perform
+                              | otherwise = (x:xs):[]-- n == 0
