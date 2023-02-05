@@ -38,12 +38,16 @@ count v (x:xs)
           -- result: []
 
 -- looks more like getting unique elements
-diff _ [] = []
+diff lst1 [] = lst1 -- second list is empty; simply return first list
 diff [] _ = []
 diff (x:xs) (ys)
+     | (count x ys == 0) = x:(diff xs ys)-- curr element in lst1 not in lst2; add to output
+     | otherwise = diff xs ys
+{-
+     *I do not know if we are allowed to use `elem`*
      | x `elem` ys = diff xs ys -- value appears in list2 -> do not add to output
      | otherwise = x:(diff xs ys) -- value does not appear in list2 -> add to output
-
+-}
 
 -- P1(c) bag_diff ; 8%
 -- Description: Takes two lists as inputs and returns the difference of the first list
@@ -197,6 +201,7 @@ find_routes targetStop ((route,stops):xs)
 group_sum [] _ = [] -- nothing in list
 group_sum lst n = groupHelper lst n [] 0 0
      where 
+          groupHelper [] _ [] _ _ = [] -- both input list and buf are empty
           groupHelper [] _ buf _ _ = [reverse buf] -- input list is empty
           -- params: 
                -- lst: input list
@@ -206,11 +211,7 @@ group_sum lst n = groupHelper lst n [] 0 0
                -- k: which group number we are in (k = 0,1,2,3,...)
           groupHelper (x:xs) n buf currSum k
                | ((currSum + x) <= (n*2^k)) =  groupHelper xs n (x:buf) (currSum + x) k -- current elem makes currSum <= n*2^k; add to the sublist
-               | ((currSum + x) > (n*2^k)) =  (reverse buf):(groupHelper (x:xs) n [] 0 (k + 1)) -- current elem makes currSum > n*2^k; add buf to output list
-               | otherwise = []
+               | otherwise =  (reverse buf):(groupHelper (x:xs) n [] 0 (k + 1)) -- current elem makes currSum > n*2^k; add buf to output list
 
 -- Assignment rules ; 3%
 -- Your own tests; please add your tests to the HW1Tests.hs file ; 6%
-
-
-
