@@ -160,7 +160,16 @@ added_sums (x:xs) = addedSumsHelper (x:xs) 0
           addedSumsHelper (x:xs) currSum = (x + currSum):(addedSumsHelper xs (x + currSum))
 
 -- P5 find_routes ; 8%
+-- Description: Pullman Transit offers many bus routes in Pullman. 
+-- Assume that they maintain the bus stops for their 
+-- routes as a list of tuples. The first element of each tuple is the bus route and the second element is the list 
+-- of stops for that route (see below for an example).  
+-- Ex.:
 
+find_routes _ [] = [] -- empty list
+find_routes targetStop ((route,stops):xs)
+     | (targetStop `elem` stops) = route:(find_routes targetStop xs)
+     | otherwise = find_routes targetStop xs 
 
 -- P6 group_sum ; 15% 
 
