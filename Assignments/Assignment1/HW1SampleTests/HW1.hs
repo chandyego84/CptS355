@@ -48,7 +48,6 @@ diff (x:xs) (ys)
 -- appears in both lists and if the number of duplicate copies of the element is bigger in the first list,
 -- then this element should appear in the result as many times as the difference of the number of 
 -- occurences in the first list.
--- this problem sounds hard and complicated, too many words. is this english class or what!!  
 -- Ex.:
      -- bag_diff [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6] [1,2,3,4,5,7,7]
           -- result: [2,3,3,4,4,4,5,5,5,5,6,6,6,6,6,6]
@@ -67,7 +66,7 @@ bag_diff (x:xs) lis2
      | otherwise = bag_diff xs lis2 -- difference in occurences of the value is 0 or more for list2; do not add to output
 
 -- P2  everyN ; 10%
--- Description: Takes a list and a number 'n' (representing a count) and returns the nth value in the input list
+-- Description: Takes a list and a number 'n' (representing a count) and returns the nth value in the input list.
 -- Ex.:
      -- everyN "-hH-aA-sS-kK-eE-lL-lL" 3
           -- returns: “HASKELL"
@@ -96,7 +95,7 @@ everyN iL n
      -- [0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1] can be stored as: [(3,1),(20,1)]
 -- Assume: indexes are 0-based.
 
--- DESCRIPTION: Write a function which takes a compressed vector value (list of tuples)
+-- Description: Write a function which takes a compressed vector value (list of tuples)
 -- and returns the equivalent sparse vector (including all 0 values).
 -- Ex.:
      -- make_sparse [(3,30),(10,100),(11,110)] 
@@ -115,16 +114,50 @@ sparseHelper [] _ = [] -- list is empty
 sparseHelper ((x,y):xs) counter
      | (x == counter) = y:(sparseHelper xs (counter + 1)) -- at index to place -> place value
      | otherwise = 0:(sparseHelper ((x,y):xs) (counter + 1)) -- not at index to place, add a 0
-{-
-sparseHelper ((x,y):xs) index counter
-     | (index == counter) = y:(sparseHelper xs x (counter + 1))
-     | otherwise = 0:(sparseHelper ((x,y):xs) x (counter + 1))
--}
+
 -- P3(b) compress ; 15%
+-- Definition: Takes a sparse vector value (as a list) and returns the equivalent
+-- compressed values as a list of tuples.
+-- Ex.:
+     -- compress [0,0,0,30,0,0,0,0,0,0,100,110]
+          -- returns: [(3,30),(10,100),(11,110)]
+
+     -- compress [0,1,2,0,4,0,6,0,0,9]
+          -- returns: [(1,1),(2,2),(4,4),(6,6),(9,9)]
+
+     -- compress [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
+          -- returns: [(20,1)]
+
+     -- compress []
+          -- returns: []
+
+compress [] = [] -- nothing to compress
+compress (x:xs) = compressHelper (x:xs) 0
+     where 
+          compressHelper [] counter = []
+          compressHelper (x:xs) counter
+               | (x /= 0) = (counter, x):(compressHelper xs (counter + 1)) -- create the tuple to add to compressed list
+               | otherwise = compressHelper xs (counter + 1) -- is a 0, keep moving through list
 
 
 -- P4 added_sums ; 8%
+-- Description: Takes a list of numbers and returns a list including the cumulative
+-- partial sums of these numbers. 
+-- Ex.:
+     -- added_sums [1,2,3,4,5,6,7,8,9,10]
+          -- returns: [1,3,6,10,15,21,28,36,45,55]
 
+     -- added_sums [0,-2,3,4,-4,-1,2]
+          -- returns: [0,-2,1,5,1,0,2]
+
+     -- added_sums []
+          -- []
+
+added_sums [] = []
+added_sums (x:xs) = addedSumsHelper (x:xs) 0
+     where
+          addedSumsHelper [] _ = []
+          addedSumsHelper (x:xs) currSum = (x + currSum):(addedSumsHelper xs (x + currSum))
 
 -- P5 find_routes ; 8%
 
