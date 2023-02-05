@@ -1,6 +1,9 @@
 -- CptS 355 - Spring 2023 -- Homework1 - Haskell
 -- Name: Chandler Juego
 -- Collaborators: 
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Redundant bracket" #-}
+{-# HLINT ignore "Use camelCase" #-}
 
 module HW1
      where
@@ -164,7 +167,6 @@ added_sums (x:xs) = addedSumsHelper (x:xs) 0
 -- Assume that they maintain the bus stops for their 
 -- routes as a list of tuples. The first element of each tuple is the bus route and the second element is the list 
 -- of stops for that route (see below for an example).  
--- Ex.:
 
 find_routes _ [] = [] -- empty list
 find_routes targetStop ((route,stops):xs)
@@ -172,8 +174,40 @@ find_routes targetStop ((route,stops):xs)
      | otherwise = find_routes targetStop xs 
 
 -- P6 group_sum ; 15% 
+-- Description: Takes a list (lst) and an integer (n). Goal is to produce a result in which the
+-- elements of the original list have been collected into ordered sub-lists each containing
+-- maximum number of consecutive elements from the lst summing up to or less than n*2^k,
+-- where k is the group number starting at 0, i.e., k = 0,1,2,3,4...The leftover elements (if any)
+-- are included in the last sub-list with a sum less than n*2^k.
+-- When elements are added to the groups, if the next element in the input list (lst) is > n*2^k,
+-- the group will be empty list.
+-- Ex.:
+     -- group_sum [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17] 10 
+          -- returns: [1,2,3,4],[5,6,7],[8,9,10,11],[12,13,14,15,16],[17]]
 
+     -- group_sum [12,10,1,3,4,7,11,22,2,5,40,100,4] 10
+          -- returns: [[],[12],[10,1,3,4,7,11],[22,2,5,40],[100,4]]
+     
+     -- group_sum [5,-2,-3,4,-5,6,7,8,9,10,11,12,-13,14,15,16,20] 4
+          -- returns: [[],[5,-2,-3,4,-5,6],[7,8],[9,10,11],[12,-13,14,15,16,20]
+     
+     -- group_sum [] 3
+          -- returns: []
 
+group_sum [] _ = [] -- nothing in list
+group_sum lst n = groupHelper lst n [] 0 0
+     where 
+          groupHelper [] _ buf _ _ = [reverse buf] -- input list is empty
+          -- params: 
+               -- lst: input list
+               -- n: integer in n*2^k
+               -- buf: holds current sub-list
+               -- currSum: sum of current sub-list
+               -- k: which group number we are in (k = 0,1,2,3,...)
+          groupHelper (x:xs) n buf currSum k
+               | ((currSum + x) <= (n*2^k)) =  groupHelper xs n (x:buf) (currSum + x) k -- current elem makes currSum <= n*2^k; add to the sublist
+               | ((currSum + x) > (n*2^k)) =  (reverse buf):(groupHelper (x:xs) n [] 0 (k + 1)) -- current elem makes currSum > n*2^k; add buf to output list
+               | otherwise = []
 
 -- Assignment rules ; 3%
 -- Your own tests; please add your tests to the HW1Tests.hs file ; 6%
