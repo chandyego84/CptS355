@@ -77,14 +77,45 @@ mergeN xs = foldl (merge2) [] xs
 
 -- count 'i' "incomprehensibilities"
      -- returns: 5 
-
 count val xs = length (filter (==val) xs)
 
-
 {- (b) histogram  -}
+-- Creates a histogram from a given list
+-- Historgram will be a list of tuples (pairs)
+     -- first elem: item from input list
+     -- second elem: number of occurrences of that item in the list
+-- You MAY use the count function you defined above
+-- You MAY use eliminateDuplicates fxn you defined in HW1
+-- DO NOT USE EXPLICIT RECURSION.
+-- Orer of the tuples in the histogram can be arbitrary.
+-- type should be histogram :: Eq a => [a] -> [(a, Int)] 
+-- EX.:
+-- histogram [[],[1],[1,2],[1],[],[]]
+     -- returns: [([1,2],1),([1],2),([],3)]
 
+-- histogram "macadamia"
+     -- returns: [('c',1),('d',1),('m',2),('i',1),('a',4)]
 
+-- histogram (show 122333444455555)
+     -- returns: [('1',1),('2',2),('3',3),('4',4),('5',5)]
 
+-- ONE WAY:
+-- look at an element in the list
+-- has it been counted before?:
+     -- no: get the count of that element in the list, move on in input list
+     -- yes: move on in the input list
+-- SECOND WAY: 
+-- look at an element in the input list
+-- get count of that element and add (x, count of x) in list
+-- remove that element's duplicates from the input list
+-- move on in the input list
+
+-- IMPLEMENTED USING FIRST WAY
+-- reverse because it will show each element in order of appearance!
+histogram xs = reverse (foldl (\acc x -> 
+                         if x `elem` (map fst acc) then acc -- is the elem already counted for?
+                         else (x, count x xs):acc)  -- no, it has not been counted
+                    [] xs)
 
 -- 3                
 {- (a) concatAll -}

@@ -53,7 +53,7 @@ foldl op acc (x:xs) = foldl op (acc `op` x) xs
 -- foldl is subtly different than foldr :: (a -> b -> b) -> b -> [a] -> b
 -- accumulator acc, in foldl, has same type as first argument of op
 
-reverse' xs = foldl (\xs x -> x : xs) [] xs
+reverse' xs = foldl (\acc x -> x : acc) [] xs
 
 -- **COMBINING MULTIPLE RECURSIVE PATTERNS** --
 sumOfSquareRoots xs = sum (map sqrt (filter (>0) xs))
