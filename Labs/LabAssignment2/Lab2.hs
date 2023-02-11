@@ -30,10 +30,15 @@ merge2 xs [] = xs
 merge2 [] ys = ys
 merge2 (x:xs) (y:ys) = x : y : (merge2 (xs) (ys))
                          
-
 {- (b) merge2Tail -}
-
-
+-- Rewrite the merge2 fxn above as a tail-recursive fxn.
+-- You can use reverse or revAppend in your solution.
+merge2Tail xs ys = reverse (merge2TailHelper xs ys [])
+  where
+    merge2TailHelper xs [] acc = reverse xs ++ acc
+    merge2TailHelper [] ys acc = reverse ys ++ acc
+    -- neither list is empty yet
+    merge2TailHelper (x:xs) (y:ys) acc = merge2TailHelper xs ys (y:x:acc)
 
 
 {- (c) mergeN -}
