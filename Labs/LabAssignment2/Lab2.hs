@@ -4,7 +4,6 @@
 module Lab2
      where
 
-
 -- 1
 {- (a) merge2 -}
 -- Takes two lists, l1 and l2, and returns a merged list where elements from l1
@@ -42,8 +41,24 @@ merge2Tail xs ys = reverse (merge2TailHelper xs ys [])
 
 
 {- (c) mergeN -}
-
-
+-- Using merge2 fxn defined above and foldl fxn,
+-- mergeN: takes a list of lists
+-- returns: a new list containing all the elements in the sublists
+-- The sublists should be merged left to right
+-- i.e., the first two lists should be merged first and the merged list should
+-- further be merged with the third list, etc.
+-- DO NOT USE EXPLICIT RECURSION.
+-- type can be defiend as mergeN :: [[a]] -> [a]
+-- EX.:
+     -- mergeN ["ABCDEF","abcd","123456789","+=?$"] 
+          -- returns: "A+1=a?2$B3b4C5c6D7d8E9F"
+     
+     -- mergeN [[3,4],[-3,-2,-1],[1,2,5,8,9],[10,20,30]]
+          -- returns: [3,10,1,20,-3,30,2,4,5,-2,8,-1,9] 
+     
+     -- mergeN [[],[],[1,2,3]] 
+          -- returns: [1,2,3]
+mergeN xs = foldl (merge2) [] xs
 
 
 -- 2
