@@ -63,8 +63,22 @@ mergeN xs = foldl (merge2) [] xs
 
 -- 2
 {- (a) count -}
+-- Takes a value and a list
+-- Counts the number of occurrences of the value in the input list
+-- You MAY use length function.
+-- DO NOT USE EXPLICIT RECURSION.
+-- type should be count :: Eq a => a -> [a] -> Int 
+-- EX.:
+-- count [] [[],[1],[1,2],[]]
+     -- returns: 2
 
+-- count (-5) [1,2,3,4,5,6,7]
+     -- returns: 0
 
+-- count 'i' "incomprehensibilities"
+     -- returns: 5 
+
+count val xs = length (filter (==val) xs)
 
 
 {- (b) histogram  -}
