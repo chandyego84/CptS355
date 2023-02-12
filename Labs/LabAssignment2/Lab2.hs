@@ -132,16 +132,16 @@ histogram xs = reverse (foldl (\acc x ->
      -- returns: ""
 
 -- TODO: Use map
+{-
 concatAll xs = foldr (\x acc -> (concatAllHelper x) ++ acc) "" xs -- concatenates all concatenated substrings
      where
           concatAllHelper xs = foldr (++) "" xs -- concatenates each element in each sublist
+-}
+concatAll xs = foldr (++) "" (map (foldr (++) "") xs)
 
 {- (b) concat2Either -}               
 data AnEither  = AString String | AnInt Int
                 deriving (Show, Read, Eq)
-
-
-
 
 -- 4      
 {-  concat2Str -}               
