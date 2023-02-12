@@ -119,9 +119,22 @@ histogram xs = reverse (foldl (\acc x ->
 
 -- 3                
 {- (a) concatAll -}
+-- Given a nested list of strings
+-- Returns the concatenation of all strings in all sublists of the input list
+-- Should not need recursion
+-- Should use "map" and "foldr"
+-- type should be concatAll :: [[String]] --> String
+-- EX.:
+-- concatAll [["enrolled"," ","in"," "],["CptS","-","355"],[" ","and"," "],["CptS","-","322"]]
+     -- returns: "enrolled in CptS-355 and CptS-322"
 
+-- concatAll [[],[]]
+     -- returns: ""
 
-
+-- TODO: Use map
+concatAll xs = foldr (\x acc -> (concatAllHelper x) ++ acc) "" xs -- concatenates all concatenated substrings
+     where
+          concatAllHelper xs = foldr (++) "" xs -- concatenates each element in each sublist
 
 {- (b) concat2Either -}               
 data AnEither  = AString String | AnInt Int
