@@ -131,7 +131,6 @@ histogram xs = reverse (foldl (\acc x ->
 -- concatAll [[],[]]
      -- returns: ""
 
--- TODO: Use map
 {-
 concatAll xs = foldr (\x acc -> (concatAllHelper x) ++ acc) "" xs -- concatenates all concatenated substrings
      where
@@ -139,9 +138,30 @@ concatAll xs = foldr (\x acc -> (concatAllHelper x) ++ acc) "" xs -- concatenate
 -}
 concatAll xs = foldr (++) "" (map (foldr (++) "") xs)
 
-{- (b) concat2Either -}               
+{- (b) concat2Either -}
+-- Takes a nested list of AnEither values
+-- It returns an AString which is the concat of all values in all sublists of input list.(*)
+-- You may use the 'show' function to convert an integer value to a string
+-- Should not need recursion: use functions 'map' and 'foldr'
+-- type should be concat2Either :: [[AnEither]] -> AnEither
+-- NOTE: to implement this, change concatAll fxn and helper fxn in order to handle AnEither values instead of strings
+-- EX.:
+     -- concat2Either [[AString "enrolled", AString " ", AString "in", AString " "],[AString 
+          --"CptS", AString "-", AnInt 355], [AString " ", AString "and", AString " "], [AString 
+          --"CptS", AString "-", AnInt 322]]
+     -- returns: AString "enrolled in CptS-355 and CptS-322"
+
+     -- concat2Either [[AString "", AnInt 0],[]]
+          -- returns: AString "0"
+
+     -- concat2Either []
+          -- returns: AString ""
+
 data AnEither  = AString String | AnInt Int
                 deriving (Show, Read, Eq)
+
+
+
 
 -- 4      
 {-  concat2Str -}               
