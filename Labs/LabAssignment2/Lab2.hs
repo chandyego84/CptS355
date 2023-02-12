@@ -146,9 +146,7 @@ concatAll xs = foldr (++) "" (map (foldr (++) "") xs)
 -- type should be concat2Either :: [[AnEither]] -> AnEither
 -- NOTE: to implement this, change concatAll fxn and helper fxn in order to handle AnEither values instead of strings
 -- EX.:
-     -- concat2Either [[AString "enrolled", AString " ", AString "in", AString " "],[AString 
-          --"CptS", AString "-", AnInt 355], [AString " ", AString "and", AString " "], [AString 
-          --"CptS", AString "-", AnInt 322]]
+     -- concat2Either [[AString "enrolled", AString " ", AString "in", AString " "],[AString "CptS", AString "-", AnInt 355], [AString " ", AString "and", AString " "], [AString "CptS", AString "-", AnInt 322]]
      -- returns: AString "enrolled in CptS-355 and CptS-322"
 
      -- concat2Either [[AString "", AnInt 0],[]]
@@ -160,8 +158,14 @@ concatAll xs = foldr (++) "" (map (foldr (++) "") xs)
 data AnEither  = AString String | AnInt Int
                 deriving (Show, Read, Eq)
 
+-- helper fxn: AnEither -> AString
+eitherToString (AString s) = s -- element is a AString
+eitherToString (AnInt i) = show i -- element is AnInt
 
-
+concat2Either :: [[AnEither]] -> AnEither
+-- eitherToAString: looks at each element in each sublist, converts to a string if it is not AString
+concat2Either xs = AString $ foldr (++) "" (map concatEveryToString xs) -- map will return list of strings, where each string was the concat of each sublist1
+     where concatEveryToString x = foldr (++) "" (map eitherToString x) -- for each sublist, concat each element into one string
 
 -- 4      
 {-  concat2Str -}               
