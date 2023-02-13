@@ -34,8 +34,8 @@ merge2 (x:xs) (y:ys) = x : y : (merge2 (xs) (ys))
 -- You can use reverse or revAppend in your solution.
 merge2Tail xs ys = reverse (merge2TailHelper xs ys [])
   where
-    merge2TailHelper xs [] acc = reverse xs ++ acc
-    merge2TailHelper [] ys acc = reverse ys ++ acc
+    merge2TailHelper xs [] acc = reverse xs ++ acc -- because we are reversing above, we reverse here to undo
+    merge2TailHelper [] ys acc = reverse ys ++ acc -- because we are reversing above, we reverse here to undo
     -- neither list is empty yet
     merge2TailHelper (x:xs) (y:ys) acc = merge2TailHelper xs ys (y:x:acc)
 
@@ -59,7 +59,6 @@ merge2Tail xs ys = reverse (merge2TailHelper xs ys [])
      -- mergeN [[],[],[1,2,3]] 
           -- returns: [1,2,3]
 mergeN xs = foldl (merge2) [] xs
-
 
 -- 2
 {- (a) count -}
@@ -113,9 +112,9 @@ count val xs = length (filter (==val) xs)
 -- IMPLEMENTED USING FIRST WAY
 -- reverse because it will show each element in order of appearance!
 histogram xs = reverse (foldl (\acc x -> 
-                         if x `elem` (map fst acc) then acc -- is the elem already counted for?
+                         if x `elem` (map fst acc) then acc -- element has been counted already
                          else (x, count x xs):acc)  -- no, it has not been counted
-                    [] xs)
+                         [] xs)
 
 -- 3                
 {- (a) concatAll -}
@@ -164,32 +163,64 @@ eitherToString (AnInt i) = show i -- element is AnInt
 
 concat2Either :: [[AnEither]] -> AnEither
 -- eitherToAString: looks at each element in each sublist, converts to a string if it is not AString
-concat2Either xs = AString $ foldr (++) "" (map concatEveryToString xs) -- map will return list of strings, where each string was the concat of each sublist1
+concat2Either xs = AString $ foldr (++) "" (map concatEveryToString xs) -- map will return list of strings, where each string was the concat of each sublist
      where concatEveryToString x = foldr (++) "" (map eitherToString x) -- for each sublist, concat each element into one string
 
 -- 4      
 {-  concat2Str -}               
+-- Returns a concatenated string value instead of an AString value.
+-- EX.:
+{-
+> concat2Str [[AString "enrolled", AString " ", AString "in", AString " "],[AString "CptS", AString "-", AnInt 355], [AString " ", AString "and", AString " "], [AString "CptS", AString "-", AnInt 322]] 
+returns: "enrolled in CptS-355 and CptS-322" 
+
+> concat2Str [[AString "", AnInt 0],[]] 
+returns: "0" 
+
+> concat2Str [] 
+returns: ""  
+-}
+concat2Str xs = foldr (++) "" (map concatEveryToString xs) -- map will return list of strings, where each string was the concat of each sublist1
+     where concatEveryToString x = foldr (++) "" (map eitherToString x) -- for each sublist, concat each element into one string
 
 
 
-
+-- Consider following Haskell type Op that defines the major arithmetic operations on integers.
 data Op = Add | Sub | Mul | Pow
           deriving (Show, Read, Eq)
 
-evaluate:: Op -> Int -> Int -> Int
+-- Following fxn `evaluate` takes an Op value as argument and evaluates the operation on the integer arguments x and y.
+evaluate :: Op -> Int -> Int -> Int
 evaluate Add x y =  x+y
-evaluate Sub   x y =  x-y
+evaluate Sub x y =  x-y
 evaluate Mul x y =  x*y
 evaluate Pow x y = x^y
 
+-- Now, we define an expression tree as a Haskell polymorphic binary tree type with data at the leaves
+-- and Op operators at the interior nodes.
 data ExprTree a = ELEAF a | ENODE Op (ExprTree a) (ExprTree a)
                   deriving (Show, Read, Eq)
 
-
 -- 5 
 {- evaluateTree -}
+-- Takes a tree of type (ExprTree Int) as input
+-- Evaluates the tree from bottom-up
+-- type should be evaluateTree :: ExpTree Int -> Int
+-- EX.:
+{-
+> evaluateTree (ENODE Mul (ENODE Sub (ENODE Add (ELEAF 4) (ELEAF 5)) (ELEAF 6)) (ENODE Sub (ELEAF 10) (ELEAF 8)))
+returns: 6
 
+> evaluateTree (ENODE Add (ELEAF 10)  
+                        (ENODE Sub (ELEAF 50) (ENODE Mul (ELEAF 3) (ELEAF 10)))) 
+returns: 30 
 
+> evaluateTree (ELEAF 4) 
+returns: 4 
+-}
+evaluateTree :: ExprTree Int -> Int
+evaluateTree (ELEAF x) = x -- base: if just a leaf, return the leaf
+evaluateTree (ENODE op t1 t2) = evaluate op (evaluateTree t1) (evaluateTree t2)
 
 -- 6
 {- printInfix -}
