@@ -247,11 +247,38 @@ printInfix (ENODE op t1 t2) = "(" ++ (printInfix t1) ++ " `" ++ show op ++ "` " 
 
 --7
 {- createRTree -}
+-- Takes a tree of type (ExprTree Int)
+-- Creates a tree of type (ResultTree Int)
+-- createRTree recursively evaluates each subtree in the input tree
+-- and store the evaluated values in the corresponding nodes in output ResultTree
 data ResultTree a  = RLEAF a | RNODE a (ResultTree a) (ResultTree a)
                      deriving (Show, Read, Eq)
 
 
+-- helper function for createRTree: extracts an RTree's node value or leaf value
+getValue :: ResultTree Int -> Int
+getValue (RLEAF x) = x
+getValue (RNODE x _ _) = x
 
-
+createRTree :: ExprTree Int -> ResultTree Int
+createRTree (ELEAF x) = (RLEAF x) -- direct copy if leaf node: ELEAF x --> RLEAF x
+-- Again, look at very simple tree:
+{-
+          Add
+         /  \
+        1    2
+-}
+-- The tree is initially an ExprTree
+-- FORMAT: ENODE op t1 t2 (specifically, Add (LEAF 1) (LEAF 2))
+-- Replace add with the evalution of x and y, where x = leaf1 and y = leaf2
+     -- before evaluating, leaf1 and leaf2 are ExprTrees (ELEAF)
+     -- turn them into (RLEAF) via createRTree
+     -- after they are turned into RTREE format, evaluate them by extracting their values (look at getValue fxn above)
+createRTree (ENODE op t1 t2) = RNODE (evaluate op x y) (r1) (r2)
+     where
+          r1 = createRTree t1
+          r2 = createRTree t2
+          x = getValue r1
+          y = getValue r2
 
 
