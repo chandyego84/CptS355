@@ -1,6 +1,6 @@
 -- CptS 355 - Lab 2 (Haskell) - Spring 2023
 -- Name: Chandler Juego
--- Collaborated with: 
+-- Collaborated with: LIGHT WORK!!!!!!!! ME, MYSELF, and I!
 module Lab2
      where
 
@@ -224,8 +224,26 @@ evaluateTree (ENODE op t1 t2) = evaluate op (evaluateTree t1) (evaluateTree t2)
 
 -- 6
 {- printInfix -}
+-- Takes a tree of type (ExprTree a)
+-- Prints the operands in the interior nodes and the values in the leaf nodes "in-fix" order
+-- to a string
+-- EXPRESSIONS LOWER IN THE TREE ARE ENCLOSED IN PARANTHESES.
+-- EX.:
+-- > printInfix (ENODE Mul (ENODE Sub (ENODE Add (ELEAF 4) (ELEAF 5)) (ELEAF 6)) (ENODE Sub (ELEAF 10) (ELEAF 8))) 
+     -- returns: "(((4 `Add` 5) `Sub` 6) `Mul` (10 `Sub` 8))"
 
-
+-- Consider a simple tree.
+{-
+          Add
+         /  \
+        1    2
+Would represent: ENODE Add (t1) (t2), where t1 = ELEAF 1 and t2 = ELEAF 2
+     --> want to make it look like 1 `Add` 2
+     --> printinfix t1, show the operation (add), printinfix t2
+-}
+printInfix :: Show a => ExprTree a -> String
+printInfix (ELEAF x) = show x
+printInfix (ENODE op t1 t2) = "(" ++ (printInfix t1) ++ " `" ++ show op ++ "` " ++ (printInfix t2) ++ ")"
 
 --7
 {- createRTree -}

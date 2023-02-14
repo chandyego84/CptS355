@@ -75,3 +75,17 @@ strUpper s = map toUpper s -- uppercase every char in string s
 
 -- > treeMap strUpper myNewTree 
 -- returns: Node (Node (Leaf "ONE") (Leaf "TWO")) (Node (Leaf "THREE") (Leaf "FOUR"))
+
+-- PREORDER TRAVERSAL OF A TRITREE
+data TriTree a = TriLEAF a | 
+                 TriNODE a (TriTree a) (TriTree a) (TriTree a)
+                 deriving (Show, Eq)
+
+-- PREORDER TRAVERSAL
+preOrderTri :: TriTree a -> [a]
+preOrderTri (TriLEAF x) = [x]
+preOrderTri (TriNODE x t1 t2 t3) = [x] ++ (preOrderTri t1) ++ (preOrderTri t2) ++ (preOrderTri t3) 
+
+myTriTree = TriNODE 0 (TriNODE 9 (TriLEAF 1) (TriLEAF 2) (TriLEAF 6) ) 
+            (TriNODE 8 (TriLEAF 3) (TriLEAF 4) (TriLEAF 7) ) 
+            (TriLEAF 5) 
