@@ -122,13 +122,48 @@ routes = [
 -}
 find_routes n xs = foldl (\acc (x,y) -> if n `elem` y then (x:acc) -- if n is in y, add route to acc
                                         else acc) [] xs -- otherwise, acc remains the same
+
 ------------------------------------------------------
 {- P4  add_lengths and add_nested_lengths -}
+-- Consider the following datatype which represents the US customary length units:
+data LengthUnit = INCH Int | FOOT Int | YARD Int
+                    deriving (Show, Read, Eq)
 
 -- (a) add_lengths - 6%
+-- Takes two LengthUnit values
+-- Calculates the sum of those in INCHs. (Note 1 foot = 12 inches, 1 yard = 36 inches)
+-- EX.:
+     -- add_lengths (INCH (-5)) (INCH 10)
+          -- returns: (INCH 5)
+     
+     -- add_lengths (INCH 5) (FOOT 10)
+          -- returns: (INCH 125)
+     
+     -- add lengths (YARD 1) (INCH 10)
+
+add_lengths (INCH x) (INCH y) = (INCH) (x + y)
+
+add_lengths (INCH x) (FOOT y) = (INCH) (x + (12 * y))
+add_lengths (FOOT x) (INCH y) = (INCH) ((12 * x) + y)
+
+add_lengths (INCH x) (YARD y) = (INCH) (x + (36 * y))
+add_lengths (YARD x) (INCH y) = (INCH) ((36 * x) + y)
+
+add_lengths (FOOT x) (YARD y) = (INCH) ((12 * x) + (36 * y))
+add_lengths (YARD x) (FOOT y) = (INCH) ((36 * x) + (12 * x))
 
 -- (b) add_nested_lengths - 10%
+-- Takes a nested list of LengthUnit values
+-- Calculates the sum of those in INCHs.
+-- HINT: The base for fold needs to be a LengthUnit value
+-- EX.:
+     -- add_nested_lengths [[INCH (-5),INCH 10], [YARD (-1), YARD 2,FOOT 2], [INCH 5],[]]
+          -- returns: (INCH 70)
+     
+     -- add_nested_lengths [[YARD 2, FOOT 1], [YARD 1, FOOT 2, INCH 10],[YARD 3]] (INCH 262)
+          -- returns: (INCH 70)
 
+add_nested_lengths xs = foldl add_lengths (INCH 0) (map (foldl add_lengths (INCH 0)) xs)
 ------------------------------------------------------
 {- P5 sum_tree and create_sumtree -}
 
