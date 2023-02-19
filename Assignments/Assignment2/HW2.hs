@@ -53,6 +53,25 @@ remove_every_tail n lst = remove_helper n lst n []
 {- P2  get_outof_range and count_outof_range  -}
 
 -- (a) get_outof_range – 6%
+-- Takes two values v1, v2, and a list xs
+-- Returns the values in xs which are less than v1 and greater than v2
+-- Using only higher order fxns
+-- EX.:
+     -- get_outof_range (-5) 5 [10,5,0,1,2,-5,-10]
+          -- returns: [10,-10]
+     
+     -- get_outof_range 4 6  [1,2,3,4,5,6,7,8,9,10]
+          -- returns: [1,2,3,7,8,9,10]
+     
+     -- get_outof_range 'A' 'z' "CptS-355" 
+          -- returns: "-355"
+
+get_outof_range _ _ [] = []
+get_outof_range v1 v2 xs = filter (\x -> (x < v1) `exor` (x > v2)) xs
+     where
+          exor a b -- my own XOR
+               | (a == b) = False -- both true -> false
+               | otherwise = True
 
 -- (b) count_outof_range – 10%
 
