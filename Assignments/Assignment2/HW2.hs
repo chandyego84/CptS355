@@ -74,9 +74,25 @@ get_outof_range v1 v2 xs = filter (\x -> (x < v1) `exor` (x > v2)) xs
                | otherwise = True
 
 -- (b) count_outof_range – 10%
+-- Using get_outof_range fxn:
+-- Takes two integer values v1, v2, NESTED list "xs"
+-- Returns total number of values in xs which are less than and greater than v2 (exclusive)
+-- EX.:
+     -- count_outof_range (-5) 5 [[10,5,0,1,2,-5,-10],[4,2,-1,3,-4,8,5,9,4,10],[-5,-6,7,8]]
+          -- returns: 8
+     
+     -- count_outof_range 'A' 'z' ["Cpt S","-","355",":","HW2"]
+          -- returns: 7
+     
+     -- count_outof_range 1 1 [[4,1],[2,-1,3,-4],[8,0,1,5,9,4]]
+          -- returns: 10
+
+count_outof_range _ _ [] = 0
+count_outof_range v1 v2 xs = length $ foldl (\acc sublist -> acc ++ get_outof_range v1 v2 sublist) [] xs
 
 ------------------------------------------------------
 {- P3  find_routes - 10% -}
+
 
 ------------------------------------------------------
 {- P4  add_lengths and add_nested_lengths -}
