@@ -92,8 +92,36 @@ count_outof_range v1 v2 xs = length $ foldl (\acc sublist -> acc ++ get_outof_ra
 
 ------------------------------------------------------
 {- P3  find_routes - 10% -}
+-- Rewrite find_routes (HW1) using higher order fxns
+-- Takes a list of bus routes and a stop name
+-- Returns the list of the bus routes which stop at the given bus route
+-- You MAY use 'elem' fxn.
+-- EX.:
+{-
+routes = [ 
+    ("Lentil", ["Chinook", "Orchard", "Valley", "Emerald","Providence", "Stadium",  
+      "Main", "Arbor", "Sunnyside", "Fountain", "Crestview", "Wheatland", "Walmart",  
+      "Bishop", "Derby", "Dilke"]),  
+    ("Wheat",["Chinook", "Orchard", "Valley", "Maple","Aspen", "TerreView", "Clay",  
+     "Dismores", "Martin", "Bishop", "Walmart", "PorchLight", "Campus"]),  
+    ("Silver",["TransferStation", "PorchLight", "Stadium", "Bishop","Walmart",  
+     "Outlet", "RockeyWay","Main"]), 
+    ("Blue",["TransferStation", "State", "Larry", "TerreView","Grand", "TacoBell",  
+     "Chinook", "Library"]), 
+    ("Gray",["TransferStation", "Wawawai", "Main", "Sunnyside","Crestview",  
+     "CityHall", "Stadium", "Colorado"]), 
+    ("Coffee",["TransferStation", "Grand", "Main", "Visitor","Stadium", "Spark",  
+     "CUB"]) 
+   ]
 
+   > find_routes "Walmart" routes
+          ["Lentil", "Wheat", "Silver"]
 
+   > find_routes "Rosauers" routes
+          []
+-}
+find_routes n xs = foldl (\acc (x,y) -> if n `elem` y then (x:acc) -- if n is in y, add route to acc
+                                        else acc) [] xs -- otherwise, acc remains the same
 ------------------------------------------------------
 {- P4  add_lengths and add_nested_lengths -}
 
