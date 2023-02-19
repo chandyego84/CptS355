@@ -166,10 +166,38 @@ add_lengths (YARD x) (FOOT y) = (INCH) ((36 * x) + (12 * x))
 add_nested_lengths xs = foldl add_lengths (INCH 0) (map (foldl add_lengths (INCH 0)) xs)
 ------------------------------------------------------
 {- P5 sum_tree and create_sumtree -}
+-- Polymorphic binary tree type with data both at leaves and interior nodes
+data Tree a = NULL | LEAF a | NODE a  (Tree a)  (Tree a)  
+              deriving (Show, Read, Eq) 
+-- NULL represents a missing child for a node
 
 -- (a) sum_tree - 8%
+-- Takes a tree of type Tree
+-- Calculates the sum of the values stored in both the leaves and interior nodes
+-- EX.: 
+-- sum_tree (NODE 8 (NODE 0 (LEAF 4) (NODE 4 NULL (LEAF 9))) (NODE 0 (NODE 0 (LEAF 10) (NODE 7 NULL (LEAF 13)))  NULL))
+     -- returns: 55
+{-
+     Simple trees:
+     1. NULL
+     2. (LEAF v)
+     3.
+          (NODE v)
+         /        \
+     (LEAF x)    (LEAF y)
+-}
+sum_tree (NULL) = 0
+sum_tree (LEAF v) = v
+sum_tree (NODE v t1 t2) = v + (sum_tree t1) + (sum_tree t2)
 
 -- (b) create_sumtree - 10%
+-- Takes a tree value
+-- Returns Tree where the interior nodes store the sum of the leaf and node values underneath them
+     -- (including NODE's own values)
+
+create_sumtree (NULL) = NULL
+create_sumtree (LEAF v) = LEAF v
+create_sumtree (NODE v t1 t2) = NODE  (v + sum_tree t1 + sum_tree t2) (create_sumtree t1) (create_sumtree t2)
 
 ------------------------------------------------------
 {- P6 list_tree - 16% -}
