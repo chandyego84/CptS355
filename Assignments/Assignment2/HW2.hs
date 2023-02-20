@@ -200,10 +200,33 @@ create_sumtree (LEAF v) = LEAF v
 create_sumtree (NODE v t1 t2) = NODE  (v + sum_tree t1 + sum_tree t2) (create_sumtree t1) (create_sumtree t2)
 
 ------------------------------------------------------
+-- Tree with nodes of arbitrary # of children
+data ListTree a = LEAFs [a] | NODEs [ListTree a] 
+                  deriving (Show, Read, Eq) 
 {- P6 list_tree - 16% -}
+-- Takes a function (f), base value (base), and a ListTree (t)
+-- Combines the values in the lists of the leaf notes in tree t by applying function f
+-- Leaves of the tree are scanned from left -> right
+-- The combined values from all leaves are further combined with function f
+-- max is the built-in fxn that returns max of two values
+-- EX.:
+-- list_tree (+) 0 (NODEs [ NODEs [ LEAFs [1,2,3],LEAFs [4,5], NODEs [LEAFs [6], LEAFs []] ], NODEs [], LEAFs [7,8], NODEs [LEAFs [], LEAFs []]])
+     -- returns: 36
+-- Simplest cases:
+     -- fold on the list in a leaf
+     -- evaluate each ListTree in each node
+          -- then fold on those evaluations
+list_tree fxn base (LEAFs xs) = foldl fxn base xs
+list_tree fxn base (NODEs xs) = foldl fxn base (map (list_tree fxn base) xs)
 
-
--- Tree examples - 4%
 -- INCLUDE YOUR TREE EXAMPLES HERE
+-- RUN: sum_tree and create_sumtree on trees
+
+-- following tree is a relatively standard binary tree
+my69Tree = (NODE 50 (NODE 1 (NODE 3 (NODE 2 (LEAF 1) (NULL)) (LEAF 1)) (LEAF 3)) (NODE 4 (LEAF 2) (LEAF 2)))
+
+-- following tree only has non-NULL values on left branches
+my42Tree = (NODE 21 (NODE 10 (NODE 5 (NODE 4 (LEAF 2) NULL) NULL) NULL) NULL)
 
 -- Assignment rules 3%
+-- LIGHTWEEEEEEEIIIIIIIIGHTTTTTTTTTTTTTTTT!
