@@ -88,4 +88,4 @@ preOrderTri (TriNODE x t1 t2 t3) = [x] ++ (preOrderTri t1) ++ (preOrderTri t2) +
 
 myTriTree = TriNODE 0 (TriNODE 9 (TriLEAF 1) (TriLEAF 2) (TriLEAF 6) ) 
             (TriNODE 8 (TriLEAF 3) (TriLEAF 4) (TriLEAF 7) ) 
-            (TriLEAF 5) 
+            (TriLEAF 5)
