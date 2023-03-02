@@ -56,6 +56,27 @@ def mostCases(data):
     return maxMonth
 
 ## problem 4a) searchDicts(L,k)
+# Takes a list of dicts L and a key K as input
+# Checks each dict in L starting from end list
+# if k appears in a dict, the fxn returns the value for key k
+     # if k appears in > 1 dictionary, it will return the one that it finds first (closer to end of list)
+# EX.:
+'''
+L1 = [{"x":1,"y":True,"z":"found"},{"x":2},{"y":False}] 
+     searchDicts(L1,"x") returns 2 
+     searchDicts(L1,"y") returns False 
+     searchDicts(L1,"z")  returns   "found" 
+     searchDicts(L1,"t") returns None 
+'''
+def searchDicts(L, k):
+     for i in range(len(L)-1, -1, -1):
+          # traverse list in reverse order
+          for (key, val) in L[i].items():
+               if (k == key):
+                    return val
+
+     return None
+
 ## problem 4b) searchDicts2(L,k)
 
 ## problem 5 - getLongest
@@ -63,8 +84,4 @@ def mostCases(data):
 ## problem 6 - apply2nextN 
 
 if __name__ == '__main__':
-    print(mostCases({ 'King':{'Mar':2706,'Apr':3620,'May':1860,'Jun':2157,'July':5014,'Aug':4327,'Sep':2843},
-            'Pierce':{'Mar':460,'Apr':965,'May':522,'Jun':647,'July':2470,'Aug':1776,'Sep':1266}, 
-            'Snohomish':{'Mar':1301,'Apr':1145,'May':532,'Jun':568,'July':1540,'Aug':1134,'Sep':811}, 
-            'Spokane':{'Mar':147,'Apr':222,'May':233,'Jun':794,'July':2412,'Aug':1530,'Sep':1751}, 
-            'Whitman' : {'Apr':7,'May':5,'Jun':19,'July':51,'Aug':514,'Sep':732, 'Oct':278} }))
+     print("Chandler is the coolest g.\n")
