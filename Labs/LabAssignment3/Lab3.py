@@ -16,6 +16,7 @@ def debug(*s):
 
 def getNumCases(data, counties, months):
      newCases = 0
+     
      for county in counties:
           # check each county's data
           for month in months:
@@ -25,6 +26,18 @@ def getNumCases(data, counties, months):
 
 
 ## problem 2 getMonthlyCases
+# Reformat data so that each key is a month, each value contains dict of county:new cases
+def getMonthlyCases(data):
+     newData = {}
+
+     for (county, monthsCases) in data.items():
+          for (month, case) in monthsCases.items():
+               if month not in newData:
+                    # initialize the dict value for that month
+                    newData[month] = {}
+               newData[month][county] = case
+
+     return newData
 
 from functools import reduce
 ## problem 3 mostCases 
@@ -35,3 +48,12 @@ from functools import reduce
 ## problem 5 - getLongest
 
 ## problem 6 - apply2nextN 
+
+if __name__ == '__main__':
+    '''
+    print(getMonthlyCases({ 'King':{'Mar':2706,'Apr':3620,'May':1860,'Jun':2157,'July':5014,'Aug':4327,'Sep':2843},
+            'Pierce':{'Mar':460,'Apr':965,'May':522,'Jun':647,'July':2470,'Aug':1776,'Sep':1266}, 
+            'Snohomish':{'Mar':1301,'Apr':1145,'May':532,'Jun':568,'July':1540,'Aug':1134,'Sep':811}, 
+            'Spokane':{'Mar':147,'Apr':222,'May':233,'Jun':794,'July':2412,'Aug':1530,'Sep':1751}, 
+            'Whitman' : {'Apr':7,'May':5,'Jun':19,'July':51,'Aug':514,'Sep':732, 'Oct':278} }))
+     '''
