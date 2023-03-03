@@ -89,6 +89,7 @@ def searchDicts(L, k):
      # the fxn will check dicts d6, d5, d3, d1, d0 in order => return the first value found for key k
           # if k can't be found in any dict => return None
 
+# Function: return the value of first key that matches k (starting from end)
 # :param currVal: if a k is found in that dict, this holds the corresponding val closest to front of list
 # :param nex: holds the list index which will be searched in next recursive call
 def searchDicts2Helper(L, k, nex):
@@ -97,7 +98,7 @@ def searchDicts2Helper(L, k, nex):
           if (k in L[nex][1].keys()):
                return L[nex][1][k]
           
-          return None
+          return None # could not find a matching key
 
      else:
           # not at front of list yet
@@ -105,6 +106,8 @@ def searchDicts2Helper(L, k, nex):
                return L[nex][1][k]
           return searchDicts2Helper(L, k, L[nex][0])
 
+# Precondition: List is NOT empty
+     # TODO: if it is empty, we can add an additional check
 def searchDicts2(L, k):
      endListIndex = len(L) - 1
      return searchDicts2Helper(L, k, L[endListIndex][0])
@@ -145,12 +148,42 @@ def searchDicts2(L, k):
 '''           
 
 ## problem 5 - getLongest
+# Takes arbitraryily nested list of strings (L) and returns longest string in L
+# NOTE: Longest string can be found at any nesting level, so it should recursively
+     # check all sublists
+# Do not assume max depth for nesting
+# If > 1 string with max length, return the one that appears earlier in list
+# :param L: list or sublist
+# :param currMax: current max length string in list
+# :param nex: index in list
+def getLongestHelper(L, currMax, nex):
+     if (type(L[nex]) == list):
+          # current element is another list (sublist)
+          subListMax = getLongestHelper(L[nex], "", 0) # start from beginning of the sublist
+          if (len(subListMax) > len(currMax)):
+               currMax = subListMax
+
+     if (nex == len(L)-1):
+          # reached end of the list
+          if (len(L[nex]) > len(currMax)):
+               # found new max
+               currMax = L[nex]
+
+          return currMax
+
+     else:
+          if (len(L[nex]) > len(currMax)):
+               # found newMax
+               currMax = L[nex]
+          return getLongestHelper(L, currMax, nex + 1)
+
+# Precondition: List is NOT empty
+     #TODO: if it is empty, we can add an additional check
+def getLongest(L):
+     startIndex = 0
+     return getLongestHelper(L, "", startIndex)
 
 ## problem 6 - apply2nextN 
 
 if __name__ == '__main__':
-     L2 = [(0,{"x":0,"y":True,"z":"zero"}),       
-     (0,{"x":1}), 
-     (1,{"y":False}), 
-     (1,{"x":3, "z":"three"}), 
-     (2,{})]
+     L = ['hi', 'imy']
