@@ -78,10 +78,79 @@ def searchDicts(L, k):
      return None
 
 ## problem 4b) searchDicts2(L,k)
+# Takes a list of tuples (tL) and a key k as input
+# Each tuple in the input list includes an integer index val and dict
+# Index in each tuple represents a link to another tuple in the list
+     # e.g., index 3 refers to 4th tuple
+# Fxn: checks dict in each tuple in tL starting from end of list and following the
+     # indexes specified in the tuples.
+# EX.:
+     # [(0,d0),(0,d1),(0,d2),(1,d3),(2,d4),(3,d5),(5,d6)]
+     # the fxn will check dicts d6, d5, d3, d1, d0 in order => return the first value found for key k
+          # if k can't be found in any dict => return None
+
+# :param currVal: if a k is found in that dict, this holds the corresponding val closest to front of list
+# :param nex: holds the list index which will be searched in next recursive call
+def searchDicts2Helper(L, k, nex):
+     if (nex == 0):
+          # we reached the end of the list (front of the list) OMG!!! WOW! ZOO WEE MAMA!
+          if (k in L[nex][1].keys()):
+               return L[nex][1][k]
+          
+          return None
+
+     else:
+          # not at front of list yet
+          if (k in L[nex][1].keys()):
+               return L[nex][1][k]
+          return searchDicts2Helper(L, k, L[nex][0])
+
+def searchDicts2(L, k):
+     endListIndex = len(L) - 1
+     return searchDicts2Helper(L, k, L[endListIndex][0])
+
+#### OOPS I DID IT SO IT RETURNS NUMBER AT CLOSEST TO FRONT, NOT CLOSEST TO END ####
+# :param currVal: if a k is found in that dict, this holds the corresponding val closest to front of list
+# :param nex: holds the list index which will be searched in next recursive call
+'''
+def searchDicts2Helper(L, k, currVal, nex):
+     if (nex == 0):
+          # we reached the end of the list (front of the list) OMG!!! WOW! ZOO WEE MAMA!
+          if (k in L[nex][1].keys()):
+               currVal = L[nex][1][k]
+          
+          return currVal
+
+     else:
+          # not at front of list yet
+          if (k in L[nex][1].keys()):
+               currVal = L[nex][1][k]
+          return searchDicts2Helper(L, k, currVal, L[nex][0])
+
+def searchDicts2(L, k):
+     endListIndex = len(L) - 1
+     return searchDicts2Helper(L, k, None, L[endListIndex][0])
+'''
+
+### A ITERATIVE SOLUTION, OOPS ###
+'''
+     for i in range(len(L)-1, -1, -1):
+          # traverse through list in reverse order
+          if (k in L[i][1].keys()):
+               return L[i][1][k]
+
+          i = L[i][0] # change index to what tuple links to
+     
+     return None
+'''           
 
 ## problem 5 - getLongest
 
 ## problem 6 - apply2nextN 
 
 if __name__ == '__main__':
-     print("Chandler is the coolest g.\n")
+     L2 = [(0,{"x":0,"y":True,"z":"zero"}),       
+     (0,{"x":1}), 
+     (1,{"y":False}), 
+     (1,{"x":3, "z":"three"}), 
+     (2,{})]
