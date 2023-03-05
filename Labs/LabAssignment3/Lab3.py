@@ -184,6 +184,67 @@ def getLongest(L):
      return getLongestHelper(L, "", startIndex)
 
 ## problem 6 - apply2nextN 
+# Description: iterator that represents the aggregated sequence of values from an input iterator.
+     # iterator initialized with a combining fxn (op), int value (n), input iterator (input)
+     # when __next__() method called => combine the next "n" values in the "input" by applying "op" fxn
+          # will return the combined value
+     # iterator should stop when it reaches end of the input sequence
+          # if input sequence infinite => return infinite sequence
+# EX.:
+     # iSequence = apply2nextN(lambda a,b:a+b, 3, iter(range(1,32))) 
+          # iSequence represents the sequence [6, 15, 24, 33, 42, 51, 60, 69, 78, 87, 31]
+     # iSequence.__next__()   # returns 6 
+     # iSequence.__next__()   # returns 15 
+     # iSequence.__next__()   # returns 24 
+     # rest = [] 
+     # for item in iSequence:
+          # rest.append(item)
+               # rest is [33, 42, 51, 60, 69, 78, 87, 31]
+# TODO: NOT PASSING OR EVEN FINISHING EXECUTION OF TEST CASE 3
+class apply2nextN():
+     def __init__(self, op, n, inp):
+          '''
+          :attr op: combining function
+          :attr n: the n values to be combined in input iterator
+          :attr inp: input iterator
+          :attr rest: contains remaining operated elements that __next__ has not called 
+          '''
+          self.op = op
+          self.n = n
+          self.rest = []
+          self.rest.extend(inp) # init the rest with all elems in inp
+     
+     # Method: operates on first n elements in input
+     def operate(self):
+          result = self.rest[0] # init the base result of operation on n elems to first elem
+          for i in range(1, self.n):
+               if (i < len(self.rest)):
+                    result = self.op(result, self.rest[i])
+               else:
+                    break
+
+          self.rest = self.rest[self.n:] # update the new input to remaining elements to be operated on
+
+          return result
+          
+     def __iter__(self):
+          return self
+     
+     def __next__(self):
+          if (any(self.rest)):
+               # there are still elements to potentially operate on
+               return self.operate()
+          
+          else:
+               raise StopIteration()
 
 if __name__ == '__main__':
-     L = ['hi', 'imy']
+     iSequence = apply2nextN(lambda a,b:a+b, 3, iter(range(1,32))) 
+     print(iSequence.__next__())   # returns 6 
+     print(iSequence.__next__())   # returns 15 
+     print(iSequence.__next__())   # returns 24 
+     rest = [] 
+     for item in iSequence: 
+          rest.append(item)
+     
+     print(rest)
