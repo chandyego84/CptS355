@@ -25,7 +25,7 @@ log_input = {'CptS355':{'Mon':3,'Wed':2,'Sat':2},
 '''
 # {'Fri': 10, 'Mon': 6, 'Sat': 4, 'Thu': 8, 'Tue': 5, 'Wed': 6} 
 # NOTE: should not change input dict value, should not hardcode keys/value
-### using no higher-order functions :(
+### try using no higher-order functions?????!!! :(
 def aggregate_log(logInput):
      dayCountDict = {}
 
@@ -63,7 +63,36 @@ def combine_dict(log1, log2):
      return combinedDict
 
 ## problem 1(c) - merge_logs– 12%
+# Description: Define a fxn merge_logs which takes a list of course log dicts
+# returns: dict which includes the combined logs for each class
+     # i.e., logs of each class should be merged to a single dict
+     # NOTE: should use combine_dict defind above
+'''
+EX.:
+log_list = [{'CptS355':{'Mon':3,'Wed':2,'Sat':2},'CptS360':{'Mon':3,'Tue':2,'Wed':2,'Fri':10},   
+             'CptS321':{'Tue':2,'Wed':2,'Thu':3},'CptS322':{'Tue':1,'Thu':5,'Sat':2}}, 
+            {'CptS322':{'Mon':2},'CptS360':{'Thu':2, 'Fri':5},'CptS321':{'Mon':1,'Sat':3}}, 
+            {'CptS355':{'Sun':8},'CptS360':{'Fri':5},'CptS321':{'Mon':4},'CptS322':{'Sat':3}}] 
+'''
+# returns:
+'''
+{'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},  
+ 'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
+ 'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
+ 'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
+'''
+def merge_logs(logList):     
+     mergedLogs = {}
 
+     for log in logList:
+          for course in log.keys():
+               if (course in mergedLogs):
+                    # course already exist in mergedLogs => update the mergedLogs[course]
+                    mergedLogs[course] = combine_dict(log[course], mergedLogs[course])     
+               else:
+                    mergedLogs[course] = log[course]
+
+     return mergedLogs
 
 ## problem 2(a) - most_hours – 15%
 
@@ -80,6 +109,7 @@ def combine_dict(log1, log2):
 ## problem 5 - merge – 10% 
 
 if __name__ == '__main__':
-     log1 = {'Mon':3,'Wed':2,'Sat':2} 
-     log2 = {'Mon':3,'Tue':2,'Wed':2,'Fri':10} 
-     print(combine_dict(log1,log2))
+     print(merge_logs([{'CptS355':{'Mon':3,'Wed':2,'Sat':2},'CptS360':{'Mon':3,'Tue':2,'Wed':2,'Fri':10},   
+             'CptS321':{'Tue':2,'Wed':2,'Thu':3},'CptS322':{'Tue':1,'Thu':5,'Sat':2}}, 
+            {'CptS322':{'Mon':2},'CptS360':{'Thu':2, 'Fri':5},'CptS321':{'Mon':1,'Sat':3}}, 
+            {'CptS355':{'Sun':8},'CptS360':{'Fri':5},'CptS321':{'Mon':4},'CptS322':{'Sat':3}}]))
