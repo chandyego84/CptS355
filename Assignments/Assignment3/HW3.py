@@ -111,20 +111,37 @@ def merge_logs(logList):
 #NOTE: should NOT use loops/recursion but use map, reduce, and/or filter funcitons
 
 def most_hours(log):
+     mostHours = reduce(lambda a, b: a if a[1] > b[1] else b,
+                    map(lambda course: (course, reduce(lambda a, b: a + b, log.get(course).values())), # tuple: (course, sum course hours)
+                              filter(lambda course: bool(log.get(course)), log))) # get courses that have hours from log
+     '''
+     ### USING FOR LOOP ###
      mostHours = (None, 0)
-
      for course in log:
           courseSum = reduce(lambda a,b: a+b, log.get(course).values()) # sum course hours
           if (courseSum > mostHours[1]):
                mostHours = (course, courseSum)
+     '''
      
      return mostHours
 
-     #reduce(sumHours, courseDays.values())
-
-
 ## problem 2(b) - filter_log – 15%
+# Consider the log input in problem 1a; Want to find courses that you study for on a particular day of week
+     # for more than some number of hours
+# Takes log_input data as input
+     # returns: courses that has the given day in its log with >= required number of hours
+# EX.:
+'''
+log_input = {'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},  
+             'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
+             'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
+             'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
+'''
+     # returns: ['CptS355', 'CptS360', 'CptS321']
+#NOTE: should not use loops/recursion. Use map/reduce/filter
 
+def filter_log(log, day, hours):
+     return None
 
 ## problem 3 - graph_cycle – 12% 
 

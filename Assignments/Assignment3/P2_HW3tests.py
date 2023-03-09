@@ -13,8 +13,7 @@ class P2_HW3tests(unittest.TestCase):
     def test_most_hours(self):
         output = ('CptS360', 29)
         self.assertTupleEqual(most_hours(self.log_input),output)
-    
-    '''
+
     def test_filter_log1(self):
         output = sorted(['CptS360', 'CptS321'])
         self.assertListEqual(sorted(filter_log(self.log_input,"Tue", 2)),output)
@@ -27,8 +26,7 @@ class P2_HW3tests(unittest.TestCase):
     def test_filter_log3(self):
         output = sorted([])
         self.assertListEqual(sorted(filter_log(self.log_input,"Wed", 3)),output)
-    '''
-    
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 
