@@ -112,7 +112,7 @@ def merge_logs(logList):
 
 def most_hours(log):
      mostHours = reduce(lambda a, b: a if a[1] > b[1] else b,
-                    map(lambda course: (course, reduce(lambda a, b: a + b, log.get(course).values())), # tuple: (course, sum course hours)
+                    map(lambda course: (course, reduce(lambda a, b: a + b, log.get(course).values())), # for each course: (course, sum course hours)
                               filter(lambda course: bool(log.get(course)), log))) # get courses that have hours from log
      '''
      ### USING FOR LOOP ###
@@ -141,7 +141,10 @@ log_input = {'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},
 #NOTE: should not use loops/recursion. Use map/reduce/filter
 
 def filter_log(log, day, hours):
-     return None
+     filteredCourses = list(filter(lambda course: True if log[course][day] >= hours else False, # filter courses according to inputs
+                              filter(lambda course: True if day in log.get(course) else False, log))) # only get courses if it has the input day in them
+
+     return filteredCourses
 
 ## problem 3 - graph_cycle – 12% 
 
@@ -153,8 +156,8 @@ def filter_log(log, day, hours):
 
 if __name__ == '__main__':
      log_input = {'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},  
-          'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
-          'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
-          'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
+             'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
+             'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
+             'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
 
-     print(most_hours(log_input))
+     filter_log(log_input, 'Tue', 3)
