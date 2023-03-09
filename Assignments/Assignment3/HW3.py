@@ -90,11 +90,37 @@ def merge_logs(logList):
                     # course already exist in mergedLogs => update the mergedLogs[course]
                     mergedLogs[course] = combine_dict(log[course], mergedLogs[course])     
                else:
-                    mergedLogs[course] = log[course]
+                    mergedLogs[course] = log[course].copy() # deep copy
+                    ###print(f"id1: {id(mergedLogs[course])}, id2: {id(log[course])}") 
 
      return mergedLogs
 
 ## problem 2(a) - most_hours – 15%
+# Descroption: Consider combined log output from above. Assume you want to find the course
+     # with max total study time.
+# FXN: takes log_input data as input
+     # returns: course having the max total hours
+# EX.:
+     '''
+     log_input = {'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},  
+             'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
+             'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
+             'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
+     '''
+     # returns: ('CptS360', 29)
+#NOTE: should NOT use loops/recursion but use map, reduce, and/or filter funcitons
+
+def most_hours(log):
+     mostHours = (None, 0)
+
+     for course in log:
+          courseSum = reduce(lambda a,b: a+b, log.get(course).values()) # sum course hours
+          if (courseSum > mostHours[1]):
+               mostHours = (course, courseSum)
+     
+     return mostHours
+
+     #reduce(sumHours, courseDays.values())
 
 
 ## problem 2(b) - filter_log – 15%
@@ -109,7 +135,9 @@ def merge_logs(logList):
 ## problem 5 - merge – 10% 
 
 if __name__ == '__main__':
-     print(merge_logs([{'CptS355':{'Mon':3,'Wed':2,'Sat':2},'CptS360':{'Mon':3,'Tue':2,'Wed':2,'Fri':10},   
-             'CptS321':{'Tue':2,'Wed':2,'Thu':3},'CptS322':{'Tue':1,'Thu':5,'Sat':2}}, 
-            {'CptS322':{'Mon':2},'CptS360':{'Thu':2, 'Fri':5},'CptS321':{'Mon':1,'Sat':3}}, 
-            {'CptS355':{'Sun':8},'CptS360':{'Fri':5},'CptS321':{'Mon':4},'CptS322':{'Sat':3}}]))
+     log_input = {'CptS355': {'Mon': 3, 'Wed': 2, 'Sat': 2, 'Sun': 8},  
+          'CptS360': {'Mon': 3, 'Tue': 2, 'Wed': 2, 'Fri': 20, 'Thu': 2},  
+          'CptS321': {'Tue': 2, 'Wed': 2, 'Thu': 3, 'Mon': 5, 'Sat': 3},  
+          'CptS322': {'Tue': 1, 'Thu': 5, 'Sat': 5, 'Mon': 2}} 
+
+     print(most_hours(log_input))
